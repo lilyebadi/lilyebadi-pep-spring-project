@@ -1,7 +1,9 @@
 package com.example.controller;
 
 import com.example.service.AccountService;
+import com.example.service.MessageService;
 import com.example.entity.Account;
+import com.example.entity.Message;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +25,9 @@ public class SocialMediaController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private MessageService messageService;
+
     @PostMapping("/register")
     public ResponseEntity<Account> register(@RequestBody Account account){
         Account registeredAccount = accountService.register(account);
@@ -42,5 +47,14 @@ public class SocialMediaController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-}
 
+    @PostMapping("/messages")
+    public ResponseEntity<Message> createMessage(@RequestBody Message message) {
+        Message createdMessage = messageService.createMessage(message);
+        if (createdMessage != null) {
+            return ResponseEntity.ok(createdMessage);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+}
