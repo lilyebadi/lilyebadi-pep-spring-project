@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.Optional;
+
 import com.example.entity.Account;
 import com.example.repository.AccountRepository;
 
@@ -26,5 +28,14 @@ public class AccountService {
         }
 
         return accountRepository.save(account);
+    }
+
+    public Account login(Account account) {
+        Optional<Account> existingAccount = accountRepository.findByUsername(account.getUsername());
+
+        if (existingAccount.isPresent() && existingAccount.get().getPassword().equals(account.getPassword())) {
+            return existingAccount.get();
+        }
+        return null;
     }
 }
