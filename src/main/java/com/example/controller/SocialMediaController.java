@@ -4,10 +4,11 @@ import com.example.service.AccountService;
 import com.example.service.MessageService;
 import com.example.entity.Account;
 import com.example.entity.Message;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,4 +58,11 @@ public class SocialMediaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    @GetMapping("/messages")
+    public ResponseEntity<List<Message>> getAllMessages() {
+        List<Message> messages = messageService.getAllMessages();
+        return ResponseEntity.ok(messages);
+    }
 }
+ 
+
