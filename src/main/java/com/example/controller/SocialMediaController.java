@@ -9,16 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-
 /**
- * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
- * found in readme.md as well as the test cases. You be required to use the @GET/POST/PUT/DELETE/etc Mapping annotations
- * where applicable as well as the @ResponseBody and @PathVariable annotations. You should
- * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
+ * TODO: You will need to write your own endpoints and handlers for your
+ * controller using Spring. The endpoints you will need can be
+ * found in readme.md as well as the test cases. You be required to use
+ * the @GET/POST/PUT/DELETE/etc Mapping annotations
+ * where applicable as well as the @ResponseBody and @PathVariable annotations.
+ * You should
+ * refer to prior mini-project labs and lecture materials for guidance on how a
+ * controller may be built.
  */
 @RestController
 public class SocialMediaController {
@@ -30,7 +34,7 @@ public class SocialMediaController {
     private MessageService messageService;
 
     @PostMapping("/register")
-    public ResponseEntity<Account> register(@RequestBody Account account){
+    public ResponseEntity<Account> register(@RequestBody Account account) {
         Account registeredAccount = accountService.register(account);
         if (registeredAccount != null) {
             return ResponseEntity.ok(registeredAccount);
@@ -40,9 +44,9 @@ public class SocialMediaController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Account> login(@RequestBody Account account){
+    public ResponseEntity<Account> login(@RequestBody Account account) {
         Account loggedInAccount = accountService.login(account);
-        if(loggedInAccount != null) {
+        if (loggedInAccount != null) {
             return ResponseEntity.ok(loggedInAccount);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -58,11 +62,17 @@ public class SocialMediaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
     @GetMapping("/messages")
     public ResponseEntity<List<Message>> getAllMessages() {
         List<Message> messages = messageService.getAllMessages();
         return ResponseEntity.ok(messages);
     }
-}
- 
 
+    @GetMapping("/messages/{messageId}")
+    public ResponseEntity<Message> getMessageById(@PathVariable Integer messageId) {
+        Message message = messageService.getMessageById(messageId);
+        return ResponseEntity.ok(message);
+    }
+
+}
