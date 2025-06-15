@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.http.HttpStatus;
@@ -75,11 +76,20 @@ public class SocialMediaController {
         Message message = messageService.getMessageById(messageId);
         return ResponseEntity.ok(message);
     }
-    
+
     @DeleteMapping("/messages/{messageId}")
     public ResponseEntity<Integer> deleteMessage(@PathVariable Integer messageId) {
         Integer rowsAffected = messageService.deleteMessage(messageId);
         return ResponseEntity.ok(rowsAffected);
     }
 
+    @PatchMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> updateMessage(@PathVariable Integer messageId, @RequestBody Message messageUpdate) {
+        Integer rowsUpdated = messageService.updateMessage(messageId, messageUpdate);
+        if (rowsUpdated != null) {
+            return ResponseEntity.ok(rowsUpdated);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 }
